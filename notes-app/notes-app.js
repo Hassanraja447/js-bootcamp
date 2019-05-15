@@ -1,17 +1,10 @@
-const notes = [
-  {
-    title: "Work on habits",
-    body: "Eat better, Exercise"
-  },
-  {
-    title: "Coding practise",
-    body: "Code daily for at least one hour"
-  },
-  {
-    title: "Work progress",
-    body: "Keep track of all the work"
-  }
-];
+let notes = [];
+
+// Check if notes already exit
+const notesJSON = localStorage.getItem("notes");
+if (notesJSON !== null) {
+  notes = JSON.parse(notesJSON);
+}
 const filters = {
   searchText: ""
 };
@@ -22,13 +15,22 @@ const renderNotes = function(notes, filters) {
   document.querySelector("#notes").innerHTML = "";
   filteredNotes.forEach(function(note) {
     const noteEl = document.createElement("p");
-    noteEl.textContent = note.title;
+    if (note.title.length > 0) {
+      noteEl.textContent = note.title;
+    } else {
+      noteEl.textContent = "Unnamed note";
+    }
     document.querySelector("#notes").appendChild(noteEl);
   });
 };
 renderNotes(notes, filters);
 document.querySelector("#create-note").addEventListener("click", function(e) {
-  console.log("The button was clicked");
+  notes.push({
+    title: "",
+    body: ""
+  });
+  localStorage.setItem("notes", JSON.stringify(notes));
+  renderNotes(notes, filters);
 });
 
 document.querySelector("#search-text").addEventListener("input", function(e) {
@@ -36,8 +38,6 @@ document.querySelector("#search-text").addEventListener("input", function(e) {
   renderNotes(notes, filters);
 });
 
-document.querySelector("#form-name").addEventListener("submit", function(e) {
-  e.preventDefault();
-  console.log(e.target.elements.firstName.value);
-  e.target.elements.firstName.value = "";
+document.querySelector("#filter-by").addEventListener("change", function(e) {
+  console.log(e.target.value);
 });

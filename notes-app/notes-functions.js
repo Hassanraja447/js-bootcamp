@@ -12,25 +12,27 @@ const getSavedNotes = function() {
 const saveNotes = function(notes) {
   localStorage.setItem("notes", JSON.stringify(notes));
 };
-// Remove notes from the list 
-const removeNote = function(id){
-  const noteIndex = notes.findIndex(function(note){
-    return note.id === id
-  })
-  if (noteIndex > -1){
-    notes.splice(noteIndex, 1)
+// Remove notes from the list
+const removeNote = function(id) {
+  const noteIndex = notes.findIndex(function(note) {
+    return note.id === id;
+  });
+  if (noteIndex > -1) {
+    notes.splice(noteIndex, 1);
   }
-}
+};
 // Generate note DOM
 const generatedNoteDOM = function(note) {
   const noteEl = document.createElement("div");
-  const textEl = document.createElement("span");
+  const textEl = document.createElement("a");
+
+  textEl.setAttribute("href", `edit.html#${note.id}`);
   const button = document.createElement("button");
-  button.addEventListener('click', function(){
+  button.addEventListener("click", function() {
     removeNote(note.id);
-    saveNotes(notes)
-    renderNotes(notes, filters)
-  })
+    saveNotes(notes);
+    renderNotes(notes, filters);
+  });
   // Setup the delete button
   button.textContent = "x";
   noteEl.appendChild(button);

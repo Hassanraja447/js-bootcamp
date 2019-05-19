@@ -1,3 +1,6 @@
+const titleElement = document.querySelector("#note-title");
+const bodyElement = document.querySelector("#note-body");
+const timeElement = document.querySelector("#time-ago");
 const noteId = location.hash.substring(1);
 let notes = getSavedNotes();
 let note = notes.find(function(note) {
@@ -6,18 +9,22 @@ let note = notes.find(function(note) {
 if (note === undefined) {
   location.assign("/index.html");
 }
-document.querySelector("#note-title").value = note.title;
-document.querySelector("#note-body").value = note.body;
+titleElement.value = note.title;
+bodyElement.value = note.body;
 
-document.querySelector("#note-title").addEventListener("input", function(e) {
+titleElement.addEventListener("input", function(e) {
   note.title = e.target.value;
+  note.updatedAt = moment().valueOf();
+  timeElement.innerHTML = generateLastEdited(note.updatedAt);
   saveNotes(notes);
 });
-document.querySelector("#note-body").addEventListener("input", function(e) {
+bodyElement.addEventListener("input", function(e) {
   note.body = e.target.value;
+  note.updatedAt = moment().valueOf();
+  timeElement.innerHTML = generateLastEdited(note.updatedAt);
   saveNotes(notes);
 });
-
+timeElement.innerHTML = generateLastEdited(note.updatedAt);
 document.querySelector("#remove-note").addEventListener("click", function() {
   removeNote(note.id);
   saveNotes(notes);
@@ -35,5 +42,6 @@ window.addEventListener("storage", function(e) {
     }
     document.querySelector("#note-title").value = note.title;
     document.querySelector("#note-body").value = note.body;
+    timeElement.innerHTML = generateLastEdited(note.updatedAt);
   }
 });

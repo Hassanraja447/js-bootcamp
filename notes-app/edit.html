@@ -7,11 +7,14 @@
     <title>Edit note</title>
   </head>
   <body>
+    <a href="index.html">Home</a>
     <input type="text" placeholder="Edit note" id="note-title" />
+    <span id="time-ago"></span>
     <textarea name="" id="note-body" cols="30" rows="10">
 enter note text</textarea
     >
     <button id="remove-note">Remove note</button>
+    <script src="moment-with-locales.min.js"></script>
     <script src="notes-functions.js"></script>
     <script src="notes-edit.js"></script>
   </body>
